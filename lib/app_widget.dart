@@ -4,6 +4,7 @@ import 'package:society_app/login_page.dart';
 import  'app_controller.dart';
 import  'home_page.dart';
 import  'register_page.dart';
+import  'register_sports_court_page.dart';
 
 class AppWidget extends StatelessWidget{
 
@@ -22,6 +23,7 @@ class AppWidget extends StatelessWidget{
             '/': (context) => LoginPage(),
             '/home': (context) => HomePage(),
             '/register': (context) => RegisterPage(),
+            '/sports_court': (context) => SportsCourtPage(),
           },
         );
       },

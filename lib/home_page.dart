@@ -41,6 +41,14 @@ class HomePageState extends State<HomePage> {
               subtitle: Text('tela de início'),
             ),
             ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Nova Quadra'),
+              subtitle: Text('tela de início'),
+              onTap: () {
+                Navigator.of(context).pushNamed('/sports_court');
+              }
+            ),
+            ListTile(
               leading: Icon(Icons.chevron_left),
               title: Text('Sair'),
               subtitle: Text('sair do aplicativo'),
@@ -76,17 +84,42 @@ class HomePageState extends State<HomePage> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (contextList, index) {
                             return ListTile(
-                              title: Text(_quadras[index]['name'], style: TextStyle(color: Colors.black, fontSize: 25.0),textAlign: TextAlign.center,),
+                              // title: Text(_quadras[index]['name'], style: TextStyle(color: Colors.black, fontSize: 25.0),textAlign: TextAlign.center,),
                               subtitle: Column(
                                 children: <Widget>[
-                                  Text(_quadras[index]['hour_value']),
-                                  Text(_quadras[index]['phone']),
-                                  MaterialButton(
-                                    color: Colors.red,
-                                    child: Text('WHATsAPP'),
-                                    onPressed: (){
-                                    whatsapp(55019997731314, 'Bom dia!');
-                                  },
+                                  Container(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Center(
+                                      child: Column(
+                                        children: <Widget>[
+                                          Card(
+                                            color: Color.fromRGBO(235, 235, 235, 0.4), 
+                                            child: Container(
+                                              padding: EdgeInsets.all(12.0),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Text(_quadras[index]['name'], style: TextStyle(color: Colors.black, fontSize: 25.0),textAlign: TextAlign.center,),
+                                                  Divider(),
+                                                  Image.network(
+                              "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg"),
+                                                  Divider(),
+                                                  Text('Flutter - 2019'),
+                                                  Text(_quadras[index]['hour_value']),
+                                                  Text(_quadras[index]['phone']),
+                                                  MaterialButton(
+                                                    color: Colors.green,
+                                                    child: Text('WHATsAPP'),
+                                                    onPressed: (){
+                                                    whatsapp(55019997731314, 'Bom dia!');
+                                                  },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ]
                               ),
@@ -96,57 +129,10 @@ class HomePageState extends State<HomePage> {
                             );
                           },
                     );
-
-                    
-                    // for(final teste in snapshot.data) {
-                    //   return Container(
-                    //   child: Text(teste['name']),
-                    // );
-                    // }                  
-                    // print(snapshot.data["results"]["currencies"]["EUR"]["buy"]);
-
-                    // return Expanded(
-                    //   child: ListView.builder(
-                    //     padding: EdgeInsets.only(top: 10.0),
-                    //     itemCount: snapshot.data.length,
-                    //     itemBuilder: (contextList, index) {
-                    //       return ListTile(
-                    //         title: Text(_quadras[index]),
-                    //       );
-                    //     }),
-                    // );
-
-                    // return SingleChildScrollView(
-                    //   padding: EdgeInsets.all(10.0),
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    //     children: <Widget>[
-                    //       Icon(Icons.monetization_on,
-                    //           size: 150.0, color: Colors.amber),
-                    //       buildTextField(
-                    //           "Reais", "R\$", realController, _realChanged),
-                    //       Divider(),
-                    //       buildTextField("Dólares", "US\$", dolarController,
-                    //           _dolarChanged),
-                    //       Divider(),
-                    //       buildTextField(
-                    //           "Euros", "€", euroController, _euroChanged),
-                    //     ],
-                    //   ),
-                    // );
                   
               }
             }
-        )
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: () {
-      //           setState(() {
-      //             counter++;
-      //           });
-      //           print(counter);
-      //         }
-      //   ),
+        ),
     );
   }
 }
