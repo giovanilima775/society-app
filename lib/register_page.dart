@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:society_app/home_page.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -9,6 +9,23 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   String email = '';
   String password = '';
+  String name = '';
+  Map map = {};
+  String url = 'http://society.filipeveronezi.dev.br:3333/register';
+
+  Future<String> registerUser(name, email, password) async {
+    String data = json.encode({
+                      'name': name,
+                      'email': email,
+                      'password': password,
+                    });
+    // print(data);
+    final response = await http.post(this.url,
+      headers: {"content-type": "application/json"},
+      body: data
+    );
+    return response.body;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextField(
                   onChanged: (text) {
-                    email = text;
+                    name = text;
                   },
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -82,7 +99,20 @@ class _RegisterPageState extends State<RegisterPage> {
                 RaisedButton(
                   child: Text('Enviar'),
                   onPressed: () {
-                    //faz alguma coisa
+                    //Chamar o a api passando os dados digitados
+                    print(name);
+                    print(email);
+                    print(password);
+                    registerUser(name, email, password).then((response) {
+                      print('Boa tarde!');
+                      Map<String, dynamic> jsonResponse = json.decode(response);
+                      
+                      if(jsonResponse.containsKey("error")) {
+                        print(json.decode(response)['error']);
+                      }else {
+                        Navigator.of(context).pushReplacementNamed('/home');
+                      }
+                    });
                   },
                 ),
               ],

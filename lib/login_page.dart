@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:society_app/home_page.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -65,7 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     //Chamar o a api passando os dados digitados
                     if(email == 'teste' && password == '123') {
-                      Navigator.of(context).pushReplacementNamed('/home');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage('Abc')));
+                      // Navigator.of(context).pushReplacementNamed('/home');
                     }else {
                       print('errado');
                     }

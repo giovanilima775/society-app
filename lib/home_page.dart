@@ -9,6 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 const request = "http://society.filipeveronezi.dev.br:3000/courts";
 
 class HomePage extends StatefulWidget {
+  String nome;
+  HomePage(this.nome);
   @override
   State<HomePage> createState() {
     // TODO: implement createState
@@ -19,12 +21,9 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   List _quadras = [];
-
-
   void whatsapp(numero, mensagem) async {
     String whatsappUrl = 'whatsapp://send?phone=$numero&text=$mensagem';
     await canLaunch(whatsappUrl) ? launch(whatsappUrl) : print("Não foi possível abrir o Whatsapp");
-
   }
 
   @override
@@ -41,7 +40,7 @@ class HomePageState extends State<HomePage> {
               subtitle: Text('tela de início'),
             ),
             ListTile(
-              leading: Icon(Icons.home),
+              leading: Icon(Icons.control_point),
               title: Text('Nova Quadra'),
               subtitle: Text('tela de início'),
               onTap: () {
@@ -64,7 +63,7 @@ class HomePageState extends State<HomePage> {
         actions: <Widget>[CustomSwitch(),],
       ),
       body: FutureBuilder<List>(
-            future: getData(),
+            future: getData(widget.nome),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -146,7 +145,8 @@ class CustomSwitch extends StatelessWidget {
   }
 }
 
-Future<List> getData() async {
+Future<List> getData(e) async {
+  print(e);
   http.Response response = await http.get(request);
   // print(json.decode(response.body)[0]);
   //{"by":"default","valid_key":false,"results":{"currencies":{"source":"BRL","USD":{"name":"Dollar","buy":5.627,"sell":5.6205,"variation":0.59},"EUR":{"name":"Euro","buy":6.6768,"sell":6.6659,"variation":0.97},"GBP":{"name":"Pound Sterling","buy":7.3442,"sell":null,"variation":0.35},"ARS":{"name":"Argentine Peso","buy":0.0723,"sell":null,"variation":0.43},"BTC":{"name":"Bitcoin","buy":77261.095,"sell":77261.095,"variation":0.435}},"stocks":{"IBOVESPA":{"name":"BM\u0026F BOVESPA","location":"Sao Paulo, Brazil","points":101259.75,"variation":-0.65},"NASDAQ":{"name":"NASDAQ Stock Market","location":"New York City, United States","points":11548.28,"variation":0.37},"CAC":{"name":"CAC 40","location":"Paris, French","variation":1.2},"NIKKEI":{"name":"Nikkei 225","location":"Tokyo, Japan","variation":0.18}},"available_sources":["BRL"],"taxes":[]},"execution_time":0.0,"from_cache":true}
