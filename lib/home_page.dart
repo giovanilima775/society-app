@@ -4,6 +4,7 @@ import 'package:society_app/app_controller.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
 const request = "http://society.filipeveronezi.dev.br:3000/courts";
 
@@ -18,6 +19,13 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   List _quadras = [];
+
+
+  void whatsapp(numero, mensagem) async {
+    String whatsappUrl = 'whatsapp://send?phone=$numero&text=$mensagem';
+    await canLaunch(whatsappUrl) ? launch(whatsappUrl) : print("Não foi possível abrir o Whatsapp");
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +76,22 @@ class HomePageState extends State<HomePage> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (contextList, index) {
                             return ListTile(
-                              title: Text(_quadras[index]['name'], style: TextStyle(color: Colors.amber, fontSize: 25.0),),
+                              title: Text(_quadras[index]['name'], style: TextStyle(color: Colors.black, fontSize: 25.0),textAlign: TextAlign.center,),
+                              subtitle: Column(
+                                children: <Widget>[
+                                  Text(_quadras[index]['hour_value']),
+                                  Text(_quadras[index]['phone']),
+                                  MaterialButton(
+                                    color: Colors.red,
+                                    child: Text('WHATsAPP'),
+                                    onPressed: (){
+                                    whatsapp(55019997731314, 'Bom dia!');
+                                  },
+                                  ),
+                                ]
+                              ),
                               onTap: () {
-                                print('Bom dia');
+                                print('Bom dia!');
                               },
                             );
                           },
