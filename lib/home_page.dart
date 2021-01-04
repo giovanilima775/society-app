@@ -10,7 +10,9 @@ const request = "http://society.filipeveronezi.dev.br:3000/courts";
 
 class HomePage extends StatefulWidget {
   String nome;
-  HomePage(this.nome);
+  String token;
+  int id;
+  HomePage(this.nome, this.token, this.id);
   @override
   State<HomePage> createState() {
     // TODO: implement createState
@@ -33,7 +35,7 @@ class HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: Column(
           children: <Widget>[
-            UserAccountsDrawerHeader(accountName: Text('Nome de Usuário'),),
+            UserAccountsDrawerHeader(accountName: Text('Nome ${widget.nome} - Id: ${widget.id}'),),
             ListTile(
               leading: Icon(Icons.home),
               title: Text('Início'),

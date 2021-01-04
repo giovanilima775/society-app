@@ -33,7 +33,7 @@ class _SportsCourtPageState extends State<SportsCourtPage> {
                   ),
                 ),
                 Container(
-                  child: Text('Login', style: 
+                  child: Text('Nova Quadra', style: 
                     TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 32.0,

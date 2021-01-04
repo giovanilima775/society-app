@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,6 +11,25 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
+  String name = '';
+  int id = 0;
+  String token;
+  String jwt = '';
+  String url = 'http://society.filipeveronezi.dev.br:3333/auth';
+
+  Future<String> registerUser(email, password) async {
+    String data = json.encode({
+                      'email': email,
+                      'password': password,
+                    });
+
+    final response = await http.post(this.url,
+      headers: {"content-type": "application/json"},
+      body: data
+    );
+    print(data);
+    return response.body;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +84,28 @@ class _LoginPageState extends State<LoginPage> {
                 RaisedButton(
                   child: Text('Entrar'),
                   onPressed: () {
+                    registerUser(email, password).then((response) {
+                      print('Boa Noite!');
+                      Map<String, dynamic> jsonResponse = json.decode(response);
+                      
+                      if(jsonResponse.containsKey("error")) {
+                        print(json.decode(response)['error']);
+                      }else {
+                        print(json.decode(response)['user']['name']);
+                        name = json.decode(response)['user']['name'];
+                        token = json.decode(response)['user']['token'];
+                        id = json.decode(response)['user']['id'];
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(name, token, id)));
+                        // Navigator.of(context).pushReplacementNamed('/home');
+                      }
+                    });
                     //Chamar o a api passando os dados digitados
-                    if(email == 'teste' && password == '123') {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage('Abc')));
-                      // Navigator.of(context).pushReplacementNamed('/home');
-                    }else {
-                      print('errado');
-                    }
+                    // if(email == 'teste' && password == '123') {
+                    //   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage('Abc')));
+                    //   // Navigator.of(context).pushReplacementNamed('/home');
+                    // }else {
+                    //   print('errado');
+                    // }
                   },
                 ),
                 Padding(
