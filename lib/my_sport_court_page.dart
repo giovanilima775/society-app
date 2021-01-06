@@ -5,24 +5,23 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
-import 'my_sport_court_page.dart';
 
-const request = "http://society.filipeveronezi.dev.br:3000/courts";
+const request = "http://society.filipeveronezi.dev.br:3000/courts/report/8";
 
-class HomePage extends StatefulWidget {
+class MySportCourt extends StatefulWidget {
   String nome;
   String token;
   int id;
-  HomePage(this.nome, this.token, this.id);
+  MySportCourt(this.nome, this.token, this.id);
   @override
-  State<HomePage> createState() {
+  State<MySportCourt> createState() {
     // TODO: implement createState
-    return HomePageState();
+    return MySportCourtState();
   }
 
 }
 
-class HomePageState extends State<HomePage> {
+class MySportCourtState extends State<MySportCourt> {
   List _quadras = [];
   void whatsapp(numero, mensagem) async {
     String whatsappUrl = 'whatsapp://send?phone=$numero&text=$mensagem';
@@ -44,11 +43,10 @@ class HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(Icons.crop_square),
-              title: Text('Minhas Quadras'),
+              title: Text('Nova Quadra'),
               subtitle: Text('tela de início'),
               onTap: () {
-                // Navigator.of(context).pushNamed('/sports_court');
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MySportCourt(widget.nome, widget.token, widget.id)));
+                Navigator.of(context).pushNamed('/sports_court');
               }
             ),
             ListTile(
@@ -75,7 +73,7 @@ class HomePageState extends State<HomePage> {
         actions: <Widget>[CustomSwitch(),],
       ),
       body: FutureBuilder<List>(
-            future: getData(widget.nome),
+            future: getData(widget.id),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -157,8 +155,9 @@ class CustomSwitch extends StatelessWidget {
   }
 }
 
-Future<List> getData(e) async {
-  print(e);
+Future<List> getData(userId) async {
+  // String url = request + userId;
+  // print(userId);
   http.Response response = await http.get(request);
   // print(json.decode(response.body)[0]);
   //{"by":"default","valid_key":false,"results":{"currencies":{"source":"BRL","USD":{"name":"Dollar","buy":5.627,"sell":5.6205,"variation":0.59},"EUR":{"name":"Euro","buy":6.6768,"sell":6.6659,"variation":0.97},"GBP":{"name":"Pound Sterling","buy":7.3442,"sell":null,"variation":0.35},"ARS":{"name":"Argentine Peso","buy":0.0723,"sell":null,"variation":0.43},"BTC":{"name":"Bitcoin","buy":77261.095,"sell":77261.095,"variation":0.435}},"stocks":{"IBOVESPA":{"name":"BM\u0026F BOVESPA","location":"Sao Paulo, Brazil","points":101259.75,"variation":-0.65},"NASDAQ":{"name":"NASDAQ Stock Market","location":"New York City, United States","points":11548.28,"variation":0.37},"CAC":{"name":"CAC 40","location":"Paris, French","variation":1.2},"NIKKEI":{"name":"Nikkei 225","location":"Tokyo, Japan","variation":0.18}},"available_sources":["BRL"],"taxes":[]},"execution_time":0.0,"from_cache":true}
