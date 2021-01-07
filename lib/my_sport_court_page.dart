@@ -22,12 +22,13 @@ class MySportCourt extends StatefulWidget {
 
 class MySportCourtState extends State<MySportCourt> {
   List _quadras = [];
+  
 
   Future<String> removeCourt(idCourt) async {
     String url = 'http://society.filipeveronezi.dev.br:3000/courts/';
     String stringId = idCourt.toString();
     url = url + stringId;
-    final response = await http.delete(url,
+    var response = await http.delete(url,
       headers: {"content-type": "application/json"},
     );
     return response.body;
@@ -79,7 +80,7 @@ class MySportCourtState extends State<MySportCourt> {
                                                   Text(_quadras[index]['name'], style: TextStyle(color: Colors.black, fontSize: 25.0),textAlign: TextAlign.center,),
                                                   Divider(),
                                                   Image.network(
-                              "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg"),
+                                                    "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg"),
                                                   Divider(),
                                                   Text('Flutter - 2019'),
                                                   Text(_quadras[index]['hour_value']),
@@ -101,6 +102,9 @@ class MySportCourtState extends State<MySportCourt> {
                                                           print('Excluir');
                                                           print(_quadras[index]['id']);
                                                           print(removeCourt(_quadras[index]['id']));
+                                                          setState(() {
+
+                                                          });
                                                         })),
                                                       ]
                                                     )
@@ -139,6 +143,7 @@ class CustomSwitch extends StatelessWidget {
 }
 
 Future<List> getData(userId) async {
+
   String request = "http://society.filipeveronezi.dev.br:3000/courts/report/"+userId.toString();
   http.Response response = await http.get(request);
   return json.decode(response.body);
