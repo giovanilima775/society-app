@@ -4,9 +4,8 @@ import 'package:society_app/app_controller.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:url_launcher/url_launcher.dart';
-
-const request = "http://society.filipeveronezi.dev.br:3000/courts/report/8";
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MySportCourt extends StatefulWidget {
   String nome;
@@ -23,53 +22,23 @@ class MySportCourt extends StatefulWidget {
 
 class MySportCourtState extends State<MySportCourt> {
   List _quadras = [];
-  void whatsapp(numero, mensagem) async {
-    String whatsappUrl = 'whatsapp://send?phone=$numero&text=$mensagem';
-    await canLaunch(whatsappUrl) ? launch(whatsappUrl) : print("Não foi possível abrir o Whatsapp");
+
+  Future<String> removeCourt(idCourt) async {
+    String url = 'http://society.filipeveronezi.dev.br:3000/courts/';
+    String stringId = idCourt.toString();
+    url = url + stringId;
+    final response = await http.delete(url,
+      headers: {"content-type": "application/json"},
+    );
+    return response.body;
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            UserAccountsDrawerHeader(accountName: Text('Nome ${widget.nome} - Id: ${widget.id}'),),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Início'),
-              subtitle: Text('tela de início'),
-            ),
-            ListTile(
-              leading: Icon(Icons.crop_square),
-              title: Text('Nova Quadra'),
-              subtitle: Text('tela de início'),
-              onTap: () {
-                Navigator.of(context).pushNamed('/sports_court');
-              }
-            ),
-            ListTile(
-              leading: Icon(Icons.control_point),
-              title: Text('Nova Quadra'),
-              subtitle: Text('tela de início'),
-              onTap: () {
-                Navigator.of(context).pushNamed('/sports_court');
-              }
-            ),
-            ListTile(
-              leading: Icon(Icons.chevron_left),
-              title: Text('Sair'),
-              subtitle: Text('sair do aplicativo'),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/');
-              },
-            ),
-          ],
-        ),
-      ),
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('Minhas Quadras'),
         actions: <Widget>[CustomSwitch(),],
       ),
       body: FutureBuilder<List>(
@@ -115,13 +84,27 @@ class MySportCourtState extends State<MySportCourt> {
                                                   Text('Flutter - 2019'),
                                                   Text(_quadras[index]['hour_value']),
                                                   Text(_quadras[index]['phone']),
-                                                  MaterialButton(
-                                                    color: Colors.green,
-                                                    child: Text('WHATsAPP'),
-                                                    onPressed: (){
-                                                    whatsapp(55019997731314, 'Bom dia!');
-                                                  },
-                                                  ),
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(flex: 4, child: MaterialButton(
+                                                          color: Colors.green,
+                                                          child: Text('Editar'),
+                                                          onPressed: (){
+                                                        })),
+                                                        Expanded(flex: 2, child: Container(
+                                                        )),
+                                                        Expanded(flex: 4, child: MaterialButton(
+                                                          color: Colors.red,
+                                                          child: Text('Excluir'),
+                                                          onPressed: (){
+                                                          print('Excluir');
+                                                          print(_quadras[index]['id']);
+                                                          print(removeCourt(_quadras[index]['id']));
+                                                        })),
+                                                      ]
+                                                    )
+                                                  )
                                                 ],
                                               ),
                                             ),
@@ -156,82 +139,8 @@ class CustomSwitch extends StatelessWidget {
 }
 
 Future<List> getData(userId) async {
-  // String url = request + userId;
-  // print(userId);
+  String request = "http://society.filipeveronezi.dev.br:3000/courts/report/"+userId.toString();
   http.Response response = await http.get(request);
-  // print(json.decode(response.body)[0]);
-  //{"by":"default","valid_key":false,"results":{"currencies":{"source":"BRL","USD":{"name":"Dollar","buy":5.627,"sell":5.6205,"variation":0.59},"EUR":{"name":"Euro","buy":6.6768,"sell":6.6659,"variation":0.97},"GBP":{"name":"Pound Sterling","buy":7.3442,"sell":null,"variation":0.35},"ARS":{"name":"Argentine Peso","buy":0.0723,"sell":null,"variation":0.43},"BTC":{"name":"Bitcoin","buy":77261.095,"sell":77261.095,"variation":0.435}},"stocks":{"IBOVESPA":{"name":"BM\u0026F BOVESPA","location":"Sao Paulo, Brazil","points":101259.75,"variation":-0.65},"NASDAQ":{"name":"NASDAQ Stock Market","location":"New York City, United States","points":11548.28,"variation":0.37},"CAC":{"name":"CAC 40","location":"Paris, French","variation":1.2},"NIKKEI":{"name":"Nikkei 225","location":"Tokyo, Japan","variation":0.18}},"available_sources":["BRL"],"taxes":[]},"execution_time":0.0,"from_cache":true}
   return json.decode(response.body);
-  // return {
-  //   "by": "default",
-  //   "valid_key": false,
-  //   "results": {
-  //     "currencies": {
-  //       "source": "BRL",
-  //       "USD": {
-  //         "name": "Dollar",
-  //         "buy": 5.627,
-  //         "sell": 5.6205,
-  //         "variation": 0.59
-  //       },
-  //       "EUR": {
-  //         "name": "Euro",
-  //         "buy": 6.6768,
-  //         "sell": 6.6659,
-  //         "variation": 0.97
-  //       },
-  //       "GBP": {
-  //         "name": "Pound Sterling",
-  //         "buy": 7.3442,
-  //         "sell": null,
-  //         "variation": 0.35
-  //       },
-  //       "ARS": {
-  //         "name": "Argentine Peso",
-  //         "buy": 0.0723,
-  //         "sell": null,
-  //         "variation": 0.43
-  //       },
-  //       "BTC": {
-  //         "name": "Bitcoin",
-  //         "buy": 77410.926,
-  //         "sell": 77410.926,
-  //         "variation": 0.63
-  //       }
-  //     },
-  //     "stocks": {
-  //       "IBOVESPA": {
-  //         "name": "BM&F BOVESPA",
-  //         "location": "Sao Paulo, Brazil",
-  //         "points": 101259.75,
-  //         "variation": -0.65
-  //       },
-  //       "NASDAQ": {
-  //         "name": "NASDAQ Stock Market",
-  //         "location": "New York City, United States",
-  //         "points": 11548.28,
-  //         "variation": 0.37
-  //       },
-  //       "CAC": {
-  //         "name": "CAC 40",
-  //         "location": "Paris, French",
-  //         "variation": 1.2
-  //       },
-  //       "NIKKEI": {
-  //         "name": "Nikkei 225",
-  //         "location": "Tokyo, Japan",
-  //         "variation": 0.18
-  //       }
-  //     },
-  //     "available_sources": [
-  //       "BRL"
-  //     ],
-  //     "taxes": [
-
-  //     ]
-  //   },
-  //   "execution_time": 0.0,
-  //   "from_cache": true
-  // };
 
 }
