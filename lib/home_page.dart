@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 import 'my_sport_court_page.dart';
+import 'register_sports_court_page.dart';
 
 const request = "http://society.filipeveronezi.dev.br:3000/courts";
 
@@ -56,7 +57,9 @@ class HomePageState extends State<HomePage> {
               title: Text('Nova Quadra'),
               subtitle: Text('tela de início'),
               onTap: () {
-                Navigator.of(context).pushNamed('/sports_court');
+                print(widget.id);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterSportsCourtPage(widget.nome, widget.token, widget.id)));
+                // Navigator.of(context).pushNamed('/sports_court');
               }
             ),
             ListTile(

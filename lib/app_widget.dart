@@ -23,7 +23,7 @@ class AppWidget extends StatelessWidget{
             '/': (context) => LoginPage(),
             '/home': (context) => HomePage('', '', 0),
             '/register': (context) => RegisterPage(),
-            '/sports_court': (context) => SportsCourtPage(),
+            '/register_sports_court_page': (context) => RegisterSportsCourtPage('', '', 0),
           },
         );
       },
