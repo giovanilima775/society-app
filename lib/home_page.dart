@@ -9,7 +9,8 @@ import 'my_sport_court_page.dart';
 import 'edit_sports_court_page.dart';
 import 'register_sports_court_page.dart';
 
-const request = "http://society.filipeveronezi.dev.br:3000/courts";
+
+const request = "http://society.filipeveronezi.dev.br:3000/courts/report";
 
 class HomePage extends StatefulWidget {
   String nome;
@@ -124,6 +125,27 @@ class HomePageState extends State<HomePage> {
                                                   Text('Flutter - 2019'),
                                                   Text(_quadras[index]['hour_value']),
                                                   Text(_quadras[index]['phone']),
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(flex: 4, child: MaterialButton(
+                                                          color: Colors.green,
+                                                          child: Text('Editar'),
+                                                          onPressed: (){
+                                                        })),
+                                                        Expanded(flex: 2, child: Container(
+                                                        )),
+                                                        Expanded(flex: 4, child: MaterialButton(
+                                                          color: Colors.red,
+                                                          child: Text('Excluir'),
+                                                          onPressed: (){
+                                                          setState(() {
+
+                                                          });
+                                                        })),
+                                                      ]
+                                                    )
+                                                  ),
                                                   MaterialButton(
                                                     color: Colors.green,
                                                     child: Text('WHATsAPP'),
@@ -165,7 +187,7 @@ class CustomSwitch extends StatelessWidget {
 }
 
 Future<List> getData(e) async {
-  print(e);
   http.Response response = await http.get(request);
+  print(response.body);
   return json.decode(response.body);
 }

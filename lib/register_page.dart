@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'home_page.dart';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -110,7 +111,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       if(jsonResponse.containsKey("error")) {
                         print(json.decode(response)['error']);
                       }else {
-                        Navigator.of(context).pushReplacementNamed('/home');
+                        print(response);
+                        String data = json.encode({
+                          'email': email,
+                          'password': password,
+                        });
+
+                        final responseLogin = http.post('http://society.filipeveronezi.dev.br:3333/auth',
+                          headers: {"content-type": "application/json"},
+                          body: data
+                        );
+                        // json.decode(responseLogin)['token'];
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(name, json.decode(response)['token'], json.decode(response)['id'])));
+                        // Navigator.of(context).pushReplacementNamed('/home');
                       }
                     });
                   },

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'my_sport_court_page.dart';
 import 'dart:convert';
 
-const request = "http://society.filipeveronezi.dev.br:3000/courts/report/42/8";
+
 
 // ignore: must_be_immutable
 class EditSportsCourtPage extends StatefulWidget {
@@ -42,18 +42,31 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
   String cidade = '';
   String uf = '';
 
-  String urlCourts = 'http://society.filipeveronezi.dev.br:3000/courts';
   
 
-  Future<String> registerCourts(local, contato, valorHora) async {
+  Future<String> registerCourts(local, contato, valorHora, courtId) async {
+
+    String validate = 'http://society.filipeveronezi.dev.br:3333/validate';
+    String authorization = 'Bearer ${widget.token}';
+    final responseValidate = await http.post(validate,
+        headers: {"Authorization": authorization},
+    );
+
+    // print('local ${local}');
+    // print(contato);
+    // print(valorHora);
+    // print(courtId);
+
+    String urlCourts = 'http://society.filipeveronezi.dev.br:3000/courts/${courtId}';
+    
     String data = json.encode({
                       'name': local,
                       'hour_value': valorHora,
                       'phone': contato,
-                      'user_id': widget.id, 
                     });
-    final response = await http.put(this.urlCourts,
-      headers: {"content-type": "application/json"},
+    print(urlCourts);
+    print(data);
+    final response = await http.put(urlCourts,
       body: data
     );
     int  id = json.decode(response.body)['id'];
@@ -61,18 +74,21 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
     Map<String, dynamic> jsonResponse = json.decode(response.body);
                       
     if(jsonResponse.containsKey("error")) {
+      print('erro');
       print(json.decode(response.body)['error']);
     }else {
-      registerAddress(this.rua, this.numero, this.bairro, this.cidade, this.uf, id);
+       print(json.decode(response.body));
+      registerAddress(this.rua, this.numero, this.bairro, this.cidade, this.uf, courtId);
     }
     return response.body;
   }
 
   Future<String> registerAddress(rua, numero, bairro, cidade, uf, id) async {
+    print('AAA');
     int court = id;
     String urlAdderss = 'http://society.filipeveronezi.dev.br:3000/courts/${court}/addresses';
 
-      print(urlAdderss);
+    print(urlAdderss);
     String data = json.encode({
                       'street': rua,
                       'number': numero,
@@ -102,7 +118,7 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
         title: Text(''),
       ),
       body: FutureBuilder<Map>(
-            future: getData(widget.court, widget.token),
+            future: getData(widget.court, widget.token, widget.id),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -134,6 +150,17 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                     _bairro = TextEditingController(text: snapshot.data['address']['district']);
                     _cidade = TextEditingController(text: snapshot.data['address']['city']);
                     _uf = TextEditingController(text: snapshot.data['address']['state']);
+
+
+                    local   = snapshot.data['name'];
+                    contato = snapshot.data['phone'];
+                    valorHora = double.parse(snapshot.data['hour_value']);
+
+                    rua     = snapshot.data['address']['street'];
+                    numero  = snapshot.data['address']['number'];
+                    bairro  = snapshot.data['address']['district'];
+                    cidade  = snapshot.data['address']['city'];
+                    uf      = snapshot.data['address']['state'];
 
                     return SingleChildScrollView(
                       child: Column(
@@ -205,6 +232,7 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                                     ),
                                   ),
                                   TextField(
+                                    controller: _rua,
                                     onChanged: (text) {
                                       rua = text;
                                     },
@@ -218,6 +246,7 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                                   ),
                                   
                                   TextField(
+                                    controller: _numero,
                                     keyboardType: TextInputType.number,
                                     onChanged: (text) {
                                       numero = int.parse(text);
@@ -231,6 +260,7 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                                     height: 10,
                                   ),
                                   TextField(
+                                    controller: _bairro,
                                     onChanged: (text) {
                                       bairro = text;
                                     },
@@ -243,6 +273,7 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                                     height: 10,
                                   ),
                                   TextField(
+                                    controller: _cidade,
                                     onChanged: (text) {
                                       cidade = text;
                                     },
@@ -255,6 +286,7 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                                     height: 10,
                                   ),
                                   TextField(
+                                    controller: _uf,
                                     textCapitalization: TextCapitalization.characters,
                                     maxLength: 2,
                                     onChanged: (text) {
@@ -271,7 +303,7 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                                   RaisedButton(
                                     child: Text('Enviar'),
                                     onPressed: () {
-                                      registerCourts(local, contato, valorHora);
+                                      registerCourts(local, contato, valorHora, snapshot.data['id']);
                                     },
                                   ),
                                 ],
@@ -289,12 +321,12 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
   }
 }
 
-Future<Map> getData(e, a) async {
+Future<Map> getData(court, token, user) async {
   // print('Quadra ${e}');
   // print(a);
-
+  String request = "http://society.filipeveronezi.dev.br:3000/courts/report/${court}/8";
   String validate = 'http://society.filipeveronezi.dev.br:3333/validate';
-  String authorization = 'Bearer ${a}';
+  String authorization = 'Bearer ${token}';
   final responseValidate = await http.post(validate,
       headers: {"Authorization": authorization},
     );
