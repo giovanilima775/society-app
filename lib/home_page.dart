@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 import 'my_sport_court_page.dart';
+import 'edit_sports_court_page.dart';
 import 'register_sports_court_page.dart';
 
 const request = "http://society.filipeveronezi.dev.br:3000/courts";
@@ -42,6 +43,9 @@ class HomePageState extends State<HomePage> {
               leading: Icon(Icons.home),
               title: Text('Início'),
               subtitle: Text('tela de início'),
+              onTap: () {
+                print(widget.token);
+              }
             ),
             ListTile(
               leading: Icon(Icons.crop_square),
@@ -146,7 +150,7 @@ class HomePageState extends State<HomePage> {
                   
               }
             }
-        ),
+      ),
     );
   }
 }

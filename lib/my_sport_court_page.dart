@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import  'edit_sports_court_page.dart';
 
 class MySportCourt extends StatefulWidget {
   String nome;
@@ -92,6 +93,8 @@ class MySportCourtState extends State<MySportCourt> {
                                                           color: Colors.green,
                                                           child: Text('Editar'),
                                                           onPressed: (){
+                                                            print(widget.token);
+                                                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditSportsCourtPage(widget.nome, widget.token, widget.id, _quadras[index]['id'])));
                                                         })),
                                                         Expanded(flex: 2, child: Container(
                                                         )),

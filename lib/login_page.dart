@@ -92,8 +92,9 @@ class _LoginPageState extends State<LoginPage> {
                         print(json.decode(response)['error']);
                       }else {
                         print(json.decode(response)['user']['name']);
+
                         name = json.decode(response)['user']['name'];
-                        token = json.decode(response)['user']['token'];
+                        token = json.decode(response)['token'];
                         id = json.decode(response)['user']['id'];
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(name, token, id)));
                         // Navigator.of(context).pushReplacementNamed('/home');
