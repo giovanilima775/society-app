@@ -58,7 +58,6 @@ class _RegisterSportsCourtPageState extends State<RegisterSportsCourtPage> {
     int court = id;
     String urlAdderss = 'http://society.filipeveronezi.dev.br:3000/courts/${court}/addresses';
 
-      print(urlAdderss);
     String data = json.encode({
                       'street': rua,
                       'number': numero,

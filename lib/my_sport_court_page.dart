@@ -56,9 +56,7 @@ class MySportCourtState extends State<MySportCourt> {
                     textAlign: TextAlign.center,
                   ));
                 default:
-                    print(snapshot.data);
                     _quadras = snapshot.data;
-                    print(_quadras.length);
                     return  ListView.builder(
                           padding: EdgeInsets.only(top: 10.0),
                           itemCount: snapshot.data.length,
@@ -83,9 +81,6 @@ class MySportCourtState extends State<MySportCourt> {
                                                   Image.network(
                                                     "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg"),
                                                   Divider(),
-                                                  Text('Flutter - 2019'),
-                                                  Text(_quadras[index]['hour_value']),
-                                                  Text(_quadras[index]['phone']),
                                                   Container(
                                                     child: Row(
                                                       children: [
@@ -93,21 +88,18 @@ class MySportCourtState extends State<MySportCourt> {
                                                           color: Colors.green,
                                                           child: Text('Editar'),
                                                           onPressed: (){
-                                                            print(widget.token);
                                                             Navigator.push(context, MaterialPageRoute(builder: (context) => EditSportsCourtPage(widget.nome, widget.token, widget.id, _quadras[index]['id'])));
-                                                        })),
-                                                        Expanded(flex: 2, child: Container(
-                                                        )),
-                                                        Expanded(flex: 4, child: MaterialButton(
-                                                          color: Colors.red,
-                                                          child: Text('Excluir'),
-                                                          onPressed: (){
-                                                          print('Excluir');
-                                                          print(_quadras[index]['id']);
-                                                          print(removeCourt(_quadras[index]['id']));
-                                                          setState(() {
+                                                            })),
+                                                            Expanded(flex: 2, child: Container(
+                                                            )),
+                                                            Expanded(flex: 4, child: MaterialButton(
+                                                              color: Colors.red,
+                                                              child: Text('Excluir'),
+                                                              onPressed: (){
+                                                              print(removeCourt(_quadras[index]['id']));
+                                                              setState(() {
 
-                                                          });
+                                                              });
                                                         })),
                                                       ]
                                                     )
@@ -123,7 +115,6 @@ class MySportCourtState extends State<MySportCourt> {
                                 ]
                               ),
                               onTap: () {
-                                print('Bom dia!');
                               },
                             );
                           },

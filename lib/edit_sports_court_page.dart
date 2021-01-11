@@ -47,15 +47,6 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
   Future<String> registerCourts(local, contato, valorHora, courtId) async {
 
     String validate = 'http://society.filipeveronezi.dev.br:3333/validate';
-    String authorization = 'Bearer ${widget.token}';
-    final responseValidate = await http.post(validate,
-        headers: {"Authorization": authorization},
-    );
-
-    // print('local ${local}');
-    // print(contato);
-    // print(valorHora);
-    // print(courtId);
 
     String urlCourts = 'http://society.filipeveronezi.dev.br:3000/courts/${courtId}';
     
@@ -69,28 +60,22 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
     
       body: data
     );
-    print('Update courts');
-    print(response.body);
-    // int  id = json.decode(response.body)['id'];
 
-    // Map<String, dynamic> jsonResponse = json.decode(response.body);
+    Map<String, dynamic> jsonResponse = json.decode(response.body);
                       
-    // if(jsonResponse.containsKey("error")) {
-    //   print('erro');
-    //   print(json.decode(response.body)['error']);
-    // }else {
-    //    print(json.decode(response.body));
-    //   registerAddress(this.rua, this.numero, this.bairro, this.cidade, this.uf, courtId);
-    // }
-    // return response.body;
+    if(jsonResponse.containsKey("error")) {
+      print(json.decode(response.body)['error']);
+    }else {
+      registerAddress(this.rua, this.numero, this.bairro, this.cidade, this.uf, courtId);
+    }
+    return response.body;
   }
 
   Future<String> registerAddress(rua, numero, bairro, cidade, uf, id) async {
-    print('AAA');
+
     int court = id;
     String urlAdderss = 'http://society.filipeveronezi.dev.br:3000/courts/${court}/addresses';
 
-    print(urlAdderss);
     String data = json.encode({
                       'street': rua,
                       'number': numero,
@@ -141,7 +126,6 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                       textAlign: TextAlign.center,
                     ));
                   } else {
-                    print('Map aaaaaaaaaaaaaaaaaaaaaaaaa');
                     print(snapshot.data);
                     _local = TextEditingController(text: snapshot.data['name']);
                     _valorHora = TextEditingController(text: snapshot.data['hour_value']);
@@ -324,18 +308,15 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
 }
 
 Future<Map> getData(court, token, user) async {
-  // print('Quadra ${e}');
-  // print(a);
+
   String request = "http://society.filipeveronezi.dev.br:3000/courts/report/${court}/8";
   String validate = 'http://society.filipeveronezi.dev.br:3333/validate';
   String authorization = 'Bearer ${token}';
   final responseValidate = await http.post(validate,
       headers: {"Authorization": authorization},
     );
-  // print(responseValidate.body);
-  // print(authorization);
+
   http.Response response = await http.get(request);
-  // print('Dados da quadra');
-  // print(response.body);
+
   return json.decode(response.body);
 }

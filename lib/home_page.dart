@@ -62,9 +62,7 @@ class HomePageState extends State<HomePage> {
               title: Text('Nova Quadra'),
               subtitle: Text('tela de início'),
               onTap: () {
-                print(widget.id);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterSportsCourtPage(widget.nome, widget.token, widget.id)));
-                // Navigator.of(context).pushNamed('/sports_court');
               }
             ),
             ListTile(
@@ -95,9 +93,7 @@ class HomePageState extends State<HomePage> {
                     textAlign: TextAlign.center,
                   ));
                 default:
-                    print(snapshot.data);
                     _quadras = snapshot.data;
-                    print(_quadras.length);
                     return  ListView.builder(
                           padding: EdgeInsets.only(top: 10.0),
                           itemCount: snapshot.data.length,
@@ -119,35 +115,38 @@ class HomePageState extends State<HomePage> {
                                                   Text(_quadras[index]['name'], style: TextStyle(color: Colors.black, fontSize: 25.0),textAlign: TextAlign.center,),
                                                   Divider(),
                                                   Image.network(
-                              "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg"),
-                                                  Divider(),
-                                                  Text('Flutter - 2019'),
-                                                  Text(_quadras[index]['hour_value']),
-                                                  Text(_quadras[index]['phone']),
+                                                  "https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg"),
+                                                  Divider(),                                                  
                                                   Container(
                                                     child: Row(
                                                       children: [
-                                                        Expanded(flex: 6, child: MaterialButton(
-                                                          color: Colors.green,
-                                                          child: Text('Editar'),
-                                                          onPressed: (){
-                                                        })),
+                                                        Expanded(flex: 6, 
+                                                        child: Container(
+                                                          child: Column(
+                                                            children: [
+                                                              Text('Rua: ' + _quadras[index]['address']['street'] + ', nº' + _quadras[index]['address']['number'].toString()),
+                                                              Text('Cidade: ' + _quadras[index]['address']['city'] +' - '+ _quadras[index]['address']['state'], textAlign: TextAlign.right),
+                                                              Text(_quadras[index]['phone']),
+                                                            ]
+                                                          ),
+                                                        ),),
                                                         Expanded(flex: 2, child: Container(
                                                         )),
                                                         Expanded(flex: 4, 
                                                         child: Text('R\$ ${_quadras[index]['hour_value']}/h', style: 
                                                           TextStyle(
                                                             fontWeight: FontWeight.w900,
-                                                            fontSize: 18.0,
+                                                            fontSize: 15.0,
                                                           ),)),
                                                       ]
                                                     )
                                                   ),
                                                   MaterialButton(
                                                     color: Colors.green,
-                                                    child: Text('WHATsAPP'),
+                                                    child: Text('Whatsapp'),
                                                     onPressed: (){
-                                                    whatsapp(55019997731314, 'Bom dia!');
+                                                    String phone = _quadras[index]['phone'];
+                                                    whatsapp(phone.replaceAll(new RegExp(r'[^\w\s]+'),''), 'Bom dia!');
                                                   },
                                                   ),
                                                 ],
@@ -161,7 +160,6 @@ class HomePageState extends State<HomePage> {
                                 ]
                               ),
                               onTap: () {
-                                print('Bom dia!');
                               },
                             );
                           },

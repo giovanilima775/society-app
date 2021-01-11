@@ -20,7 +20,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       'email': email,
                       'password': password,
                     });
-    // print(data);
     final response = await http.post(this.url,
       headers: {"content-type": "application/json"},
       body: data
@@ -100,18 +99,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 RaisedButton(
                   child: Text('Enviar'),
                   onPressed: () {
-                    //Chamar o a api passando os dados digitados
-                    print(name);
-                    print(email);
-                    print(password);
                     registerUser(name, email, password).then((response) {
-                      print('Boa tarde!');
                       Map<String, dynamic> jsonResponse = json.decode(response);
                       
                       if(jsonResponse.containsKey("error")) {
                         print(json.decode(response)['error']);
                       }else {
-                        print(response);
                         String data = json.encode({
                           'email': email,
                           'password': password,

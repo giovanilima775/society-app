@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   String jwt = '';
   String url = 'http://society.filipeveronezi.dev.br:3333/auth';
 
-  Future<String> registerUser(email, password) async {
+  Future<String> login(email, password) async {
     String data = json.encode({
                       'email': email,
                       'password': password,
@@ -27,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
       headers: {"content-type": "application/json"},
       body: data
     );
-    print(data);
     return response.body;
   }
 
@@ -84,29 +83,19 @@ class _LoginPageState extends State<LoginPage> {
                 RaisedButton(
                   child: Text('Entrar'),
                   onPressed: () {
-                    registerUser(email, password).then((response) {
-                      print('Boa Noite!');
+                    login(email, password).then((response) {
                       Map<String, dynamic> jsonResponse = json.decode(response);
                       
                       if(jsonResponse.containsKey("error")) {
                         print(json.decode(response)['error']);
                       }else {
-                        print(json.decode(response)['user']['name']);
 
                         name = json.decode(response)['user']['name'];
                         token = json.decode(response)['token'];
                         id = json.decode(response)['user']['id'];
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(name, token, id)));
-                        // Navigator.of(context).pushReplacementNamed('/home');
                       }
                     });
-                    //Chamar o a api passando os dados digitados
-                    // if(email == 'teste' && password == '123') {
-                    //   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage('Abc')));
-                    //   // Navigator.of(context).pushReplacementNamed('/home');
-                    // }else {
-                    //   print('errado');
-                    // }
                   },
                 ),
                 Padding(
