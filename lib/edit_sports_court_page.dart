@@ -64,23 +64,25 @@ class _EditSportsCourtPageState extends State<EditSportsCourtPage> {
                       'hour_value': valorHora,
                       'phone': contato,
                     });
-    print(urlCourts);
-    print(data);
-    final response = await http.put(urlCourts,
+
+    final response = await http.put(urlCourts,headers: {"content-type": "application/json"},
+    
       body: data
     );
-    int  id = json.decode(response.body)['id'];
+    print('Update courts');
+    print(response.body);
+    // int  id = json.decode(response.body)['id'];
 
-    Map<String, dynamic> jsonResponse = json.decode(response.body);
+    // Map<String, dynamic> jsonResponse = json.decode(response.body);
                       
-    if(jsonResponse.containsKey("error")) {
-      print('erro');
-      print(json.decode(response.body)['error']);
-    }else {
-       print(json.decode(response.body));
-      registerAddress(this.rua, this.numero, this.bairro, this.cidade, this.uf, courtId);
-    }
-    return response.body;
+    // if(jsonResponse.containsKey("error")) {
+    //   print('erro');
+    //   print(json.decode(response.body)['error']);
+    // }else {
+    //    print(json.decode(response.body));
+    //   registerAddress(this.rua, this.numero, this.bairro, this.cidade, this.uf, courtId);
+    // }
+    // return response.body;
   }
 
   Future<String> registerAddress(rua, numero, bairro, cidade, uf, id) async {

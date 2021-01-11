@@ -103,7 +103,6 @@ class HomePageState extends State<HomePage> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (contextList, index) {
                             return ListTile(
-                              // title: Text(_quadras[index]['name'], style: TextStyle(color: Colors.black, fontSize: 25.0),textAlign: TextAlign.center,),
                               subtitle: Column(
                                 children: <Widget>[
                                   Container(
@@ -128,21 +127,19 @@ class HomePageState extends State<HomePage> {
                                                   Container(
                                                     child: Row(
                                                       children: [
-                                                        Expanded(flex: 4, child: MaterialButton(
+                                                        Expanded(flex: 6, child: MaterialButton(
                                                           color: Colors.green,
                                                           child: Text('Editar'),
                                                           onPressed: (){
                                                         })),
                                                         Expanded(flex: 2, child: Container(
                                                         )),
-                                                        Expanded(flex: 4, child: MaterialButton(
-                                                          color: Colors.red,
-                                                          child: Text('Excluir'),
-                                                          onPressed: (){
-                                                          setState(() {
-
-                                                          });
-                                                        })),
+                                                        Expanded(flex: 4, 
+                                                        child: Text('R\$ ${_quadras[index]['hour_value']}/h', style: 
+                                                          TextStyle(
+                                                            fontWeight: FontWeight.w900,
+                                                            fontSize: 18.0,
+                                                          ),)),
                                                       ]
                                                     )
                                                   ),
